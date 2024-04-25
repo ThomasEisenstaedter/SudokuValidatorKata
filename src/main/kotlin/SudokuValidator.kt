@@ -1,1 +1,1 @@
-fun validate(board: Array<Array<Int>>) = true
+fun validate() = true

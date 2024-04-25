@@ -7,3 +7,6 @@ fun validate(board: Array<Array<Int>>): Boolean {
             else -> true
       }
 }
+
+
+

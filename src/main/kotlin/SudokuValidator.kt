@@ -1,7 +1,7 @@
 fun validate(board: Array<Array<Int>>): Boolean {
     return when {
         !board.allLinesHaveUniqueNumbers() -> false
-        !board.allLinesAreUnique() -> false
+        !board.allLinesHaveOnlyOne1To9Sequence() -> false
         !board.allRowsValid() -> false
         !board.allColumnsAreUnique() -> false
         !board.allBoxesHaveValidNumbers() -> false
@@ -16,10 +16,12 @@ fun Array<Int>.isValid() = this
 
 fun Array<Array<Int>>.allLinesHaveUniqueNumbers() = this.all { it.distinct().size == 9 }
 
-fun Array<Array<Int>>.allLinesAreUnique() = this.all { !it
-    .contentEquals(arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)) }
+fun Array<Array<Int>>.allLinesHaveOnlyOne1To9Sequence() = this.all {
+    !it
+        .contentEquals(arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9))
+}
 
-fun Array<Array<Int>>.allColumnsAreUnique() : Boolean {
+fun Array<Array<Int>>.allColumnsAreUnique(): Boolean {
     for (number in this.indices) {
         if (listOf(
                 this[0][number],
@@ -38,21 +40,24 @@ fun Array<Array<Int>>.allColumnsAreUnique() : Boolean {
     }
     return true
 }
+
 fun Array<Array<Int>>.allBoxesHaveValidNumbers(): Boolean {
-    for (number in this.indices step 3) {
-        if (listOf(
-                this[0 + number][number],
-                this[1 + number][number],
-                this[2 + number][number],
-                this[0 + number][1 + number],
-                this[1 + number][1 + number],
-                this[2 + number][1 + number],
-                this[0 + number][2 + number],
-                this[1 + number][2 + number],
-                this[2 + number][2 + number],
-            ).toSet().size != 9
-        ) {
-            return false
+    for (blockRow in 0..6 step 3) {
+        for (number in this.indices step 3) {
+            if (listOf(
+                    this[0 + blockRow][number],
+                    this[1 + blockRow][number],
+                    this[2 + blockRow][number],
+                    this[0 + blockRow][1 + number],
+                    this[1 + blockRow][1 + number],
+                    this[2 + blockRow][1 + number],
+                    this[0 + blockRow][2 + number],
+                    this[1 + blockRow][2 + number],
+                    this[2 + blockRow][2 + number],
+                ).toSet().size != 9
+            ) {
+                return false
+            }
         }
     }
     return true
